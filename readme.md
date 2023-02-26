@@ -1,11 +1,11 @@
-#Proyecto FastAPI con Docker Compose
+# Proyecto FastAPI con Docker Compose
 
-#Proyecto creado con MySql
+# Proyecto creado con MySql
 
 Requisitos previos
  - Docker y Docker Compose deben estar instalados en tu sistema.
 
-#Ejecución con Docker Compose
+# Ejecución con Docker Compose
 1. Clona este repositorio en tu máquina local.
 2. Crea un archivo .env en la raíz del proyecto con las siguientes variables de entorno:
 
@@ -27,7 +27,7 @@ Esto creará los contenedores necesarios y ejecutará la aplicación en http://l
  ```docker-compose down```
 
 
-#Ejecución sin Docker
+# Ejecución sin Docker
 
 1. Clona este repositorio en tu máquina local.
 2. Crea un archivo .env en la raíz del proyecto con las siguientes variables de entorno:
