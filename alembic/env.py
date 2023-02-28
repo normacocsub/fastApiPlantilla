@@ -14,12 +14,15 @@ password = os.getenv("MYSQL_PASSWORD")
 database = os.getenv("MYSQL_DATABASE")
 host = os.getenv("MYSQL_HOST")
 
-config2= ConfigParser()
-config2.read(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "alembic.ini")))
 db_url = os.environ.get('DB_URL')
+
+""" config2= ConfigParser()
+config2.read(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "alembic.ini")))
+
 config2.set("alembic", "sqlalchemy.url", db_url)
 with open(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "alembic.ini")), "w") as f:
-    config2.write(f)
+    config2.write(f) """
+
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from app.models.user import User
@@ -28,7 +31,7 @@ from alembic import context
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
-
+config.set_main_option("sqlalchemy.url", db_url)
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
