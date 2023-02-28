@@ -1,16 +1,14 @@
-from pydantic import BaseModel
-from typing import Optional 
-from sqlalchemy import Column, Integer, String
-from sqlalchemy.sql import text
-from app.database import Base, SessionLocal
+from sqlalchemy import Boolean, Column, Integer, String
+from sqlalchemy.orm import relationship
+from app.database import Base
 
-class UserBase(Base):
-    _tablename__ = "users"
+class User(Base):
+    __tablename__ = "users"
     id = Column(Integer, primary_key=True, index=True)
-    name = Column(String(50), index=True)
-    email = Column(String(50), unique=True, index=True)
-    password = Column(String(255))
+    email = Column(String, unique=True, index=True)
+    full_name = Column(String, index=True)
+    hashed_password = Column(String)
+    is_active = Column(Boolean, default=True)
 
-    @classmethod
-    def find_by_email(cls, email):
-        return SessionLocal().query(cls).filter(cls.email == email).first()
+    items = relationship("Item", back_populates="owner")
+

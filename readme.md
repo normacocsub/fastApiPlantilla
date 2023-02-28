@@ -1,6 +1,6 @@
 # Proyecto FastAPI con Docker Compose
 
-# Proyecto creado con MySql
+## Proyecto creado con MySql
 
 Requisitos previos
  - Docker y Docker Compose deben estar instalados en tu sistema.

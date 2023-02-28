@@ -3,6 +3,7 @@ uvicorn
 sqlalchemy
 psycopg2-binary
 pydantic
-mysql-connector-python
 sqlalchemy
 python-dotenv
+pymysql
+alembic

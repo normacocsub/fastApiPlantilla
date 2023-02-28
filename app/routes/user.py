@@ -1,38 +1,32 @@
-from fastapi import APIRouter, Depends
-from app.models.user import User
-from typing import List
-from app.database import Base, engine, get_db
+from fastapi import APIRouter, Depends, HTTPException, status
+from sqlalchemy.orm import Session
+
+from app.crud import get_user_by_email, create_user, get_user
+from app.schemas import UserCreate, UserBase, User
+from app.database import get_db
 
 router = APIRouter()
 
-@router.post("/", response_model=User, status_code=201)
-def create_user(user_create: User, db: Session = Depends(get_db)):
-    db_user = User.find_by_email(db, email=user.email)
+
+@router.post("/", response_model=UserBase, status_code=status.HTTP_201_CREATED)
+def create_user(user: UserCreate, db: Session = Depends(get_db)):
+    db_user = get_user_by_email(db, email=user.email)
     if db_user:
-        raise HTTPException(status_code=400, detail="Email already registered")
-    db_user = User(**user.dict())
-    db.add(db_user)
-    db.commit()
-    db.refresh(db_user)
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Email already registered",
+        )
+    return create_user(db=db, user=user)
+
+
+@router.get("/{user_id}", response_model=User)
+def read_user(user_id: int, db: Session = Depends(get_db)):
+    db_user = get_user(db, user_id=user_id)
+    if db_user is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User not found",
+        )
     return db_user
 
-@router.get("/", response_model=List[User], status_code=200)
-def read_users(skip: int = 0, limit: int = 100):
-    # código para obtener una lista de usuarios
-    users = []
-    return users
 
-@router.get("/{user_id}", response_model=User, status_code=200)
-def read_user(user_id: int):
-    # código para obtener un usuario por su ID
-    return user
-
-@router.put("/{user_id}", response_model=User, status_code=200)
-def update_user(user_id: int, user_update: UserUpdate):
-    # código para actualizar un usuario por su ID
-    return user
-
-@router.delete("/{user_id}", status_code=204)
-def delete_user(user_id: int):
-    # código para eliminar un usuario por su ID
-    return None
