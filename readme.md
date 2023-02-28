@@ -69,3 +69,10 @@ Esto iniciará el servidor y ejecutará la aplicación en http://localhost:8000.
 7. Cuando hayas terminado de trabajar con el entorno virtual, puedes desactivarlo ejecutando el siguiente comando:
 ```deactivate```
 Esto volverá a establecer el símbolo del sistema para que muestre la ubicación de tu carpeta actual, en lugar del entorno virtual.
+
+# Test TestClient
+
+Los test son de las rutas y se encuentran ubicados en el directorio /tests
+
+para correr los test se ejecuta el comando:
+```python -m unittest``` o ```pytest```

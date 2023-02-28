@@ -1,47 +1,49 @@
 from fastapi.testclient import TestClient
-
-from ..app.main import app
-
+from app.main import app
+from app.database import SessionLocal
+from app.schemas.user import User, UserCreate
+from app.crud.user import create_user, get_user_by_email
 
 client = TestClient(app)
 
-
+# Testing POST / route
 def test_create_user():
-    response = client.post(
-        "/users/",
-        json={
-            "name": "John Doe",
-            "email": "johndoe@example.com",
-            "password": "supersecret"
-        }
-    )
+    # Limpiar la base de datos
+    db = SessionLocal()
+    db.query(User).delete()
+    db.commit()
+
+    # Enviar solicitud POST con datos de usuario válidos
+    user = {"email": "test@example.com", "password": "password"}
+    response = client.post("/", json=user)
+
+    # Verificar que la respuesta sea exitosa
+    assert response.status_code == 201
+    assert response.json()["email"] == "test@example.com"
+
+    # Verificar que el usuario se haya creado en la base de datos
+    db_user = get_user_by_email(db, email="test@example.com")
+    assert db_user is not None
+
+    # Limpiar la base de datos
+    db.query(User).delete()
+    db.commit()
+
+# Testing GET /{user_id} route
+def test_read_user():
+    # Limpiar la base de datos y crear un usuario de prueba
+    db = SessionLocal()
+    db.query(User).delete()
+    db_user = create_user(db, user=UserCreate(email="test@example.com", password="password"))
+    db.commit()
+
+    # Enviar solicitud GET para el usuario de prueba
+    response = client.get(f"/{db_user.id}")
+
+    # Verificar que la respuesta sea exitosa y contenga los datos del usuario
     assert response.status_code == 200
-    assert response.json()["name"] == "John Doe"
-    assert response.json()["email"] == "johndoe@example.com"
+    assert response.json()["email"] == "test@example.com"
 
-
-def test_get_user():
-    response = client.get("/users/1")
-    assert response.status_code == 200
-    assert response.json()["name"] == "John Doe"
-    assert response.json()["email"] == "johndoe@example.com"
-
-
-def test_update_user():
-    response = client.put(
-        "/users/1",
-        json={
-            "name": "Jane Doe",
-            "email": "janedoe@example.com",
-            "password": "supersecret"
-        }
-    )
-    assert response.status_code == 200
-    assert response.json()["name"] == "Jane Doe"
-    assert response.json()["email"] == "janedoe@example.com"
-
-
-def test_delete_user():
-    response = client.delete("/users/1")
-    assert response.status_code == 200
-    assert response.json() == {"message": "User deleted"}
+    # Limpiar la base de datos
+    db.query(User).delete()
+    db.commit()
