@@ -13,7 +13,8 @@ Requisitos previos
 MYSQL_USER=nombre_de_usuario
 MYSQL_PASSWORD=contraseña_del_usuario
 MYSQL_ROOT_PASSWORD=contraseña_del_usuario_root
-SQLALCHEMY_DATABASE_URL=mysql+pymysql://nombre_de_usuario:contraseña_del_usuario@db/nombre_de_la_bd
+MYSQL_HOST=host de la base de datos
+DB_URL=mysql+pymysql://nombre_de_usuario:contraseña_del_usuario@db/nombre_de_la_bd
 ```
 Reemplaza los valores con los que quieras utilizar para tu base de datos y usuario.
 
@@ -36,7 +37,8 @@ Esto creará los contenedores necesarios y ejecutará la aplicación en http://l
 MYSQL_USER=nombre_de_usuario
 MYSQL_PASSWORD=contraseña_del_usuario
 MYSQL_ROOT_PASSWORD=contraseña_del_usuario_root
-SQLALCHEMY_DATABASE_URL=mysql+pymysql://nombre_de_usuario:contraseña_del_usuario@db/nombre_de_la_bd
+MYSQL_HOST=host de la base de datos
+DB_URL=mysql+pymysql://nombre_de_usuario:contraseña_del_usuario@db/nombre_de_la_bd
 ```
 
 Reemplaza los valores con los que quieras utilizar para tu base de datos y usuario.
